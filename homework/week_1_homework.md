@@ -10,7 +10,7 @@
 > - --idimage string
 > - --idfile string
 
-We're looking for a tag that has to deal with command that writes images.
+We're looking for a tag associated with a command that writes an image.
 
 By typing `docker --help` we will find one docker command that does this:
 ```
