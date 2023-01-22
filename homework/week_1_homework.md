@@ -5,7 +5,7 @@
 ## Question 1. Knowing docker tags
 > Which tag has the following text? - Write the image ID to the file
 >
-> --imageid string
-> --iidfile string
-> --idimage string
-> --idfile string
+> - --imageid string
+> - --iidfile string
+> - --idimage string
+> - --idfile string
