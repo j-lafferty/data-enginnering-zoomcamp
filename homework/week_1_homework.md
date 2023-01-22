@@ -12,12 +12,12 @@
 
 We're looking for a tag that has to deal with command that writes images.
 
-By typing 'docker --help' we will find one docker command that does this:
-'''
+By typing `docker --help` we will find one docker command that does this:
+```
 build       Build an image from a Dockerfile
-'''
+```
 
-We can now lookup the differnt tags associated with 'docker build' by typing 'docker build --help'. Doing so, we will find that the answer to this question is:
-'''
+We can now lookup the differnt tags associated with `docker build` by typing `docker build --help`. Doing so, we will find that the answer to this question is:
+```
 --iidfile string          Write the image ID to the file
-'''
+```
