@@ -128,6 +128,7 @@ pickup_date | largest_trip_distance
 2019-01-15  | 117.99
 ```
 
+
 ## Question 5. The number of passengers
 > In 2019-01-01 how many trips had 2 and 3 passengers?
 > 
@@ -135,6 +136,35 @@ pickup_date | largest_trip_distance
 > - 2: 1532 ; 3: 126
 > - 2: 1282 ; 3: 254
 > - 2: 1282 ; 3: 274
+
+We can create 2 sub-select statments, one to select the number of 2 passenger rides on 2019-01-01, and another to select the number of 3 passenger rides on 2019-01-01, and return these within the same table.
+```
+SELECT
+	TO_CHAR(
+		lpep_pickup_datetime, 'YYYY-MM-DD'
+	) AS pickup_date,
+	(
+		SELECT COUNT(*)
+		FROM green_taxi_trips
+		WHERE passenger_count = 2 AND
+		TO_CHAR(lpep_pickup_datetime, 'YYYY-MM-DD') = '2019-01-01'
+	) AS num_of_2_passengers,
+	(
+		SELECT COUNT(*)
+		FROM green_taxi_trips
+		WHERE passenger_count = 3 AND
+		TO_CHAR(lpep_pickup_datetime, 'YYYY-MM-DD') = '2019-01-01'
+	) AS num_of_3_passengers
+FROM green_taxi_trips
+GROUP BY pickup_date
+HAVING TO_CHAR(lpep_pickup_datetime, 'YYYY-MM-DD') = '2019-01-01';
+```
+Which returns:
+```
+pickup_date | num_of_2_passengers | num_of_3_passengers
+-------------------------------------------------------
+2019-01-01  | 1282                | 254
+```
 
 
 ## Question 6. Largest tip
