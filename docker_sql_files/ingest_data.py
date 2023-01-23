@@ -18,6 +18,8 @@ def main(params):
     url = params.url
 
     csv_name = ""
+    yellow_taxi_header = False
+    green_taxi_header = False
 
     if url.endswith(".csv.gz"):
         csv_name = "output.csv.gz"
@@ -34,14 +36,17 @@ def main(params):
     df = next(df_iter)
     column_headers = list(df.columns.values)
 
-    try:
-        if column_headers.index("tpep_pickup_datetime") and column_headers.index(
-            "tpep_dropoff_datetime"
-        ):
-            df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-            df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
-    except ValueError:
-        pass
+    if column_headers.count("tpep_pickup_datetime") > 0:
+        yellow_taxi_header = True
+    elif column_headers.count("lpep_pickup_datetime") > 0:
+        green_taxi_header = True
+
+    if yellow_taxi_header:
+        df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+        df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+    elif green_taxi_header:
+        df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+        df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
 
     df.head(n=0).to_sql(name=table_name, con=engine, if_exists="replace")
 
@@ -53,14 +58,12 @@ def main(params):
         try:
             df = next(df_iter)
 
-            try:
-                if column_headers.index(
-                    "tpep_pickup_datetime"
-                ) and column_headers.index("tpep_dropoff_datetime"):
-                    df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
-                    df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
-            except ValueError:
-                pass
+            if yellow_taxi_header:
+                df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+                df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+            elif green_taxi_header:
+                df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+                df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
 
             df.to_sql(name=table_name, con=engine, if_exists="append")
 
