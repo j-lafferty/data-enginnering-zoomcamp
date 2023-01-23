@@ -34,6 +34,7 @@ def main(params):
     df_iter = pd.read_csv(csv_name, iterator=True, chunksize=100000)
 
     df = next(df_iter)
+    df.columns = map(str.lower, df.columns)
     column_headers = list(df.columns.values)
 
     if column_headers.count("tpep_pickup_datetime") > 0:
@@ -57,6 +58,7 @@ def main(params):
 
         try:
             df = next(df_iter)
+            df.columns = map(str.lower, df.columns)
 
             if yellow_taxi_header:
                 df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
