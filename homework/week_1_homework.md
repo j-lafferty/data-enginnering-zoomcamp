@@ -128,3 +128,22 @@ pickup_date | largest_trip_distance
 2019-01-15  | 117.99
 ```
 
+## Question 5. The number of passengers
+> In 2019-01-01 how many trips had 2 and 3 passengers?
+> 
+> - 2: 1282 ; 3: 266
+> - 2: 1532 ; 3: 126
+> - 2: 1282 ; 3: 254
+> - 2: 1282 ; 3: 274
+
+
+## Question 6. Largest tip
+> For the passengers picked up in the Astoria Zone which was the drop off zone that had the largest tip? We want the name of the zone, not the id.
+> 
+> Note: it's not a typo, it's tip , not trip
+> 
+> - Central Park
+> - Jamaica
+> - South Ozone Park
+> - Long Island City/Queens Plaza
+
