@@ -31,7 +31,7 @@ We can now lookup the differnt tags associated with `docker build` by typing `do
 > - 3
 > - 7
 
-We can simply use the `docker run` command with the options `-i` for interactive and `t` for tty (terminal access).
+We can simply use the `docker run` command with the options `-i` for interactive and `-t` for tty (terminal access).
 
 We will also need to specify the python version for our image by using `python:3.9`.
 
