@@ -53,3 +53,24 @@ wheel      0.38.4
 ```
 So, the answer to this question is there are **_3 installed python packages/modules_**.
 
+
+## Question 3. Count records
+**We will use the green taxi trips data from January 2019 and the zones data**
+
+Green taxi trips data:
+`https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-01.csv.gz`
+
+Zones data:
+`https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv`
+
+> How many taxi trips were totally made on January 15?
+> 
+> Tip: started and finished on 2019-01-15.
+> 
+> Remember that lpep_pickup_datetime and lpep_dropoff_datetime columns are in the format timestamp (date and hour+min+sec) and not in date.
+> 
+> - 20689
+> - 20530
+> - 17630
+> - 21090
+
