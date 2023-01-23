@@ -31,3 +31,25 @@ We can now lookup the differnt tags associated with `docker build` by typing `do
 > - 3
 > - 7
 
+We can simply use the `docker run` command with the options `-i` for interactive and `t` for tty (terminal access).
+
+We will also need to specify the python version for our image by using `python:3.9`.
+
+Finally, we will need to override the default entrypoint of the python container to bash by using `--entrypoint=bash`.
+
+So, the final docker command we will use is:
+```
+docker run -it --entrypoint=bash python:3.9
+```
+Once the container is running we can execute the bash command: `pip list`
+
+The command should return the following list of installed python packages/modules:
+```
+Package    Version
+---------- -------
+pip        22.0.4
+setuptools 58.1.0
+wheel      0.38.4
+```
+So, the answer to this question is there are **_3 installed python packages/modules_**.
+
