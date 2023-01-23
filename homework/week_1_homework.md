@@ -159,7 +159,7 @@ FROM green_taxi_trips
 GROUP BY pickup_date
 HAVING TO_CHAR(lpep_pickup_datetime, 'YYYY-MM-DD') = '2019-01-01';
 ```
-Which returns:
+Which outputs:
 ```
 pickup_date | num_of_2_passengers | num_of_3_passengers
 -------------------------------------------------------
