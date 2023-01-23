@@ -177,3 +177,27 @@ pickup_date | num_of_2_passengers | num_of_3_passengers
 > - South Ozone Park
 > - Long Island City/Queens Plaza
 
+We could perform 2 `INNER JOIN` statements on the `zone_lookup` table so that we can select and compare the pickup location against the dropoff location. 
+
+Using the `HAVING` clause will allow us to select only the `Astoria` pickup location while still obtaining all associaded trip dropoff locations.
+```
+SELECT 
+	MAX(tip_amount) AS max_tip_amount,
+	pu_loc.zone AS pickup_zone,
+	do_loc.zone AS dropoff_zone
+FROM green_taxi_trips
+INNER JOIN zone_lookup AS pu_loc ON
+pulocationid = pu_loc.locationid 
+INNER JOIN zone_lookup AS do_loc ON
+dolocationid = do_loc.locationid
+GROUP BY pickup_zone, dropoff_zone
+HAVING pu_loc.zone = 'Astoria'
+ORDER BY MAX(tip_amount) DESC
+LIMIT 1;
+```
+Which outputs:
+```
+max_tip_amount | pickup_zone | dropoff_zone
+------------------------------------------------------------
+88             | Astoria     | Long Island City/Queens Plaza
+```
