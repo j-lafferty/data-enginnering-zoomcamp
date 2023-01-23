@@ -101,3 +101,30 @@ pickup_date | dropoff_date | count
 ----------------------------------
 2019-01-15  | 2019-01-15   | 20530
 ```
+
+
+## Question 4. Largest trip for each day
+> Which was the day with the largest trip distance? Use the pick up time for your calculations.
+> 
+> - 2019-01-18
+> - 2019-01-28
+> - 2019-01-15
+> - 2019-01-10
+
+To find the day with the largest trip distance, we will select the largest trip distance for each day, order by the largest trip first, and then limit the output to return only the first row:
+```
+SELECT
+	TO_CHAR(lpep_pickup_datetime, 'YYYY-MM-DD') AS pickup_date,
+	MAX(trip_distance) AS largest_trip_distance
+FROM green_taxi_trips
+GROUP BY pickup_date 
+ORDER BY largest_trip_distance DESC
+LIMIT 1;
+```
+Which outputs:
+```
+pickup_date | largest_trip_distance
+-----------------------------------
+2019-01-15  | 117.99
+```
+
