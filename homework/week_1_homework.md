@@ -69,10 +69,35 @@ https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv
 > 
 > Tip: started and finished on 2019-01-15.
 > 
-> Remember that lpep_pickup_datetime and lpep_dropoff_datetime columns are in the format timestamp (date and hour+min+sec) and not in date.
+> Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in the format timestamp (date and hour+min+sec) and not in date.
 > 
 > - 20689
 > - 20530
 > - 17630
 > - 21090
 
+We will need to update the `ingest_data.py` script to convert the `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns to date format. We could use the following:
+```
+df.lpep_pickup_datetime = pd.to_datetime(df.lpep_pickup_datetime)
+df.lpep_dropoff_datetime = pd.to_datetime(df.lpep_dropoff_datetime)
+```
+We will then need to rebuild our Docker image before ingesting the data.
+
+Now that we have the `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns in the date format, we can simply count the number of rows that have the `2019-01-15` date in both columns.
+```
+SELECT
+	TO_CHAR(lpep_pickup_datetime, 'YYYY-MM-DD') AS pickup_date,
+	TO_CHAR(lpep_dropoff_datetime, 'YYYY-MM-DD') AS dropoff_date,
+	COUNT(*)
+FROM green_taxi_trips
+GROUP BY pickup_date, dropoff_date
+HAVING
+	TO_CHAR(lpep_pickup_datetime, 'YYYY-MM-DD') = '2019-01-15' AND
+	TO_CHAR(lpep_dropoff_datetime, 'YYYY-MM-DD') = '2019-01-15';
+```
+Which outputs:
+```
+pickup_date | dropoff_date | count
+----------------------------------
+2019-01-15  | 2019-01-15   | 20530
+```
