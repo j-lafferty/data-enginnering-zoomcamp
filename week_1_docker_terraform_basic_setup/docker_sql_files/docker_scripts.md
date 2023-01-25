@@ -50,7 +50,7 @@ URL=https://s3.amazonaws.com/nyc-tlc/misc/taxi+_zone_lookup.csv
 
 URL=https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-01.csv.gz
 
-python ingest_data.py \
+python ingest_data_flow.py \
     --user=root \
     --password=root \
     --host=pg-database \
@@ -68,5 +68,5 @@ docker run -it \
         --host=pgdatabase \
         --port=5432 \
         --db=ny_taxi \
-        --table_name=green_taxi_trips \
+        --table_name=yellow_taxi_trips \
         --url=${URL}
