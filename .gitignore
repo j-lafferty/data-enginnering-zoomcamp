@@ -15,4 +15,5 @@
 serving_dir
 *.csv
 *.gz
+*.parquet
 .ipynb_checkpoints/
