@@ -105,6 +105,25 @@ As prefect was running the flow and tasks, the log printed:
 > - 5 * 1 0 *
 > - * * 5 1 0
 
+The unix-cron string format is a set of five fields in a line, which indicates the `Minute Hour Day_of_Month Month Day_of_week`.
+
+The time fields have the following format and possible values, and must follow this order:
+```
+Field	            Format of valid values
+Minute	            0-59
+Hour	            0-23
+Day of the month	1-31
+Month	            1-12 (or JAN to DEC)
+Day of the week	    0-6 (or SUN to SAT; or 7 for Sunday)
+```
+- A field can contain an asterisk (`*`), which always stands for "first-last".
+- The default time zone is set to `Etc/UTC`.
+
+So, to create a deployment as requested in this question, the following terminal command would be use:
+```
+prefect deployment build flows/etl_web_to_gcs.py:etl_web_to_gcs -n etl_green --cron "0 5 1 * *" -a
+```
+
 
 ## Question 3. Loading data to BigQuery
 > Using etl_gcs_to_bq.py as a starting point, modify the script for extracting data from GCS and loading it into BigQuery. This new script should not fill or remove rows with missing values. (The script is really just doing the E and L parts of ETL).
