@@ -143,6 +143,82 @@ prefect deployment build flows/etl_web_to_gcs.py:etl_web_to_gcs -n etl_green --c
 > - 27,235,753
 > - 11,338,483
 
+The parameterized version of the `etl_gcs_to_bq.py` script can be written as:
+```
+from pathlib import Path
+import pandas as pd
+from prefect import flow, task
+from prefect_gcp.cloud_storage import GcsBucket
+from prefect_gcp import GcpCredentials
+
+
+@task(retries=3)
+def extract_from_gcs(color: str, year: int, month: int) -> Path:
+    """Download trip data from GCS"""
+    gcs_path = f"data/{color}/{color}_tripdata_{year}-{month:02}.parquet"
+    gcs_block = GcsBucket.load("zoom-gcs")
+    gcs_block.get_directory(from_path=gcs_path, local_path=f"../data/")
+    return Path(f"../data/{gcs_path}")
+
+
+@task()
+def write_bq(df: pd.DataFrame) -> None:
+    """Write DataFrame to Big Query"""
+
+    gcp_credentials_block = GcpCredentials.load("zoom-gcp-redits")
+
+    df.to_gbq(
+        destination_table="trips_data_all.rides",
+        project_id="ny-rides-jl",
+        credentials=gcp_credentials_block.get_credentials_from_service_account(),
+        chunksize=500_000,
+        if_exists="append",
+    )
+
+
+@flow(log_prints=True)
+def etl_gcs_to_bq(months: list[int] = [1, 2], year: int = 2021, color: str = "yellow"):
+    """Main ETL flowto load data into Big Query"""
+    total_rows = 0
+
+    for month in months:
+        path = extract_from_gcs(color, year, month)
+        df = pd.read_parquet(path)
+        write_bq(df)
+        total_rows += len(df)
+
+    print(f"total rows processed: {total_rows}")
+
+
+if __name__ == "__main__":
+    color = "yellow"
+    months = [2, 3]
+    year = 2019
+    etl_gcs_to_bq(months, year, color)
+```
+The deployment code flow storage defaults to local, so it does not need to be stated in the build command.
+
+The CLI command to build the prefect deployment is:
+```
+prefect deployment build flows/parameterized_etl_gcs_to_bq.py:etl_gcs_to_bq -n "Parameterized-ETL-GCS-to-BQ" --params='{"months": [2, 3], "year": 2019, "color": "yellow"}' 
+```
+Once the `deployment.yaml` file has been created, we must then send the metadata to the prefect API for scheduling orchestration:
+```
+prefect deployment apply etl_gcs_to_bq-deployment.yaml
+```
+We can then send the deployment flow to the work queue:
+```
+prefect deployment run 'etl-gcs-to-bq/Parameterized-ETL-GCS-to-BQ'
+```
+Next, we must start the prefect agent (can be done in another terminal window) to run the work queue:
+```
+prefect agent start --work-queue "default"
+```
+We can monitor the terminal window that has Prefect Agent running to see the log print out of total number of rows that were preccessed:
+```
+23:37:22.366 | INFO    | Flow run 'fair-hedgehog' - total rows processed: 14851920
+```
+
 
 ## Question 4. Github Storage Block
 > Using the web_to_gcs script from the videos as a guide, you want to store your flow code in a GitHub repository for collaboration with your team. Prefect can look in the GitHub repo to find your flow code and read it. Create a GitHub storage block from the UI or in Python code and use that in your Deployment instead of storing your flow code locally or baking your flow code into a Docker image.
