@@ -5,12 +5,15 @@ from parameterized_flow import etl_parent_flow
 
 github_block = GitHub.load("zoom-gcs")
 
-github_path = github_block.get_directory(  # (from_path, to_path--default=pwd)
+github_sb = github_block.get_directory(  # (from_path, to_path--default=pwd)
     "week_2_workflow_orchestration/flows", "github_sb"
 )
 
 github_dep = Deployment.build_from_flow(
-    flow=etl_parent_flow, name="github-flow", path=github_path
+    flow=etl_parent_flow,
+    name="github_deploy",
+    storage=github_sb,
+    parameters={"months": [11], "year": 2020, "color": "green"},
 )
 
 
