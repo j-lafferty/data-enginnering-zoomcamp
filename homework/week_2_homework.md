@@ -234,6 +234,46 @@ We can monitor the terminal window that has Prefect Agent running to see the log
 > - 88,605
 > - 190,225
 
+I created a `github_deploy.py` script to configure the deployment build to utilize GitHub as the storage block:
+```
+from prefect.deployments import Deployment
+from prefect.filesystems import GitHub
+from parameterized_flow import etl_parent_flow
+
+
+github_block = GitHub.load("zoom-gcs")
+
+github_sb = github_block.get_directory(  # (from_path, to_path--default=pwd)
+    "week_2_workflow_orchestration/flows", "github_sb"
+)
+
+github_dep = Deployment.build_from_flow(
+    flow=etl_parent_flow,
+    name="github_deploy",
+    storage=github_sb,
+    parameters={"months": [11], "year": 2020, "color": "green"},
+)
+
+
+if __name__ == "__main__":
+    github_dep.apply()
+```
+The following python CLI command can be ran to create and apply the deployment to the prefect API:
+```
+python flows/github_deploy.py 
+```
+We can then send the deployment flow to the work queue:
+```
+prefect deployment run etl-parent-flow/github_deploy
+```
+Next, we must start the prefect agent (can be done in another terminal window) to run the work queue:
+```
+prefect agent start --work-queue "default"
+```
+We can monitor the terminal window that has Prefect Agent running to see the log print out of total number of rows that were preccessed:
+```
+20:20:24.456 | INFO    | Task run 'clean-2c6af9f6-0' - rows: 88605
+```
 
 ## Question 5. Email or Slack notifications
 > Q5. It’s often helpful to be notified when something with your dataflow doesn’t work as planned. Choose one of the options below for creating email or slack notifications.
