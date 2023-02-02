@@ -1,10 +1,7 @@
 from pathlib import Path
 import pandas as pd
-from random import randint
-from datetime import timedelta
 from prefect import flow, task
 from prefect_gcp.cloud_storage import GcsBucket
-from prefect.tasks import task_input_hash
 
 
 @task(retries=3)
@@ -64,7 +61,7 @@ def etl_parent_flow(
 
 
 if __name__ == "__main__":
-    color = "yellow"
-    months = [1, 2, 3]
-    year = 2021
+    color = "green"
+    months = [11]
+    year = 2020
     etl_parent_flow(months, year, color)
