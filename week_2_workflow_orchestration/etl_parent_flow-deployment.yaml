@@ -1,19 +1,27 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'etl-parent-flow'
 ###
-name: github_delpoy
+name: Parameterized ETL
 description: null
-version: 1b1f89d75d7b65102c03f6b39119beb7
+version: 4916ddbe6f65c97b0db3971660fc6512
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 tags: []
 parameters:
+  color: yellow
   months:
-  - 11
-  year: 2020
-  color: green
+  - 1
+  - 2
+  - 3
+  year: 2021
 schedule: null
 infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: etl-parent-flow
+manifest_path: null
 infrastructure:
   type: process
   env: {}
@@ -22,25 +30,14 @@ infrastructure:
   command: null
   stream_output: true
   working_dir: null
+  _block_document_id: b74b9792-4a48-4e4d-85fb-11b2294eb55a
+  _block_document_name: anonymous-b876a80e-cfb9-4e6c-a9ac-b85afb90f46a
+  _is_anonymous: true
   block_type_slug: process
   _block_type_slug: process
-
-###
-### DO NOT EDIT BELOW THIS LINE
-###
-flow_name: etl-parent-flow
-manifest_path: null
-storage:
-  repository: https://github.com/j-lafferty/data-enginnering-zoomcamp
-  reference: main
-  access_token: null
-  _block_document_id: 095d73f0-4fa3-4076-93f1-13dfe96ea567
-  _block_document_name: zoom-gcs
-  _is_anonymous: false
-  block_type_slug: github
-  _block_type_slug: github
-path: ''
-entrypoint: flows/github_deploy.py:etl_parent_flow
+storage: null
+path: /home/jlaf/data-engineering-zoomcamp-jl/week_2_workflow_orchestration
+entrypoint: flows/parameterized_flow.py:etl_parent_flow
 parameter_openapi_schema:
   title: Parameters
   type: object
