@@ -332,3 +332,18 @@ rows: 514392   11:35:13 AM clean-2c6af9f6-0
 > - 6
 > - 8
 > - 10
+
+When adding the `Secret` block, all that is asked for is the `block name` and the `passphrase` as a string.
+
+On the next page of the UI, after creating the block with a 10-digit passphrase, the following is displayed:
+
+> Paste this snippet into your flows to use this block. Need help? View Docs
+> ``` 
+> from prefect.blocks.system import Secret
+> secret_block = Secret.load("zoom-secret")
+> # Access the stored secret
+> secret_block.get()
+> ```
+> Value
+> ********
+There are 8 astrisks (*)
