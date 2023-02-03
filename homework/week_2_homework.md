@@ -346,5 +346,5 @@ On the next page of the UI, after creating the block with a 10-digit passphrase,
 > ```
 > Value 
 > \*\*\*\*\*\*\*\*
-> 
+
 There are 8 astrisks (*)
