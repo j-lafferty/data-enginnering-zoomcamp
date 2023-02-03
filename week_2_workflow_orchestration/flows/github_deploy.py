@@ -13,7 +13,7 @@ github_dep = Deployment.build_from_flow(
     flow=etl_parent_flow,
     name="github_deploy",
     storage=github_sb,
-    parameters={"months": [11], "year": 2020, "color": "green"},
+    parameters={"months": [4], "year": 2019, "color": "green"},
 )
 
 
