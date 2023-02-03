@@ -17,3 +17,4 @@ serving_dir
 *.gz
 *.parquet
 .ipynb_checkpoints/
+**/github_sb/

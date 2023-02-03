@@ -301,6 +301,29 @@ We can monitor the terminal window that has Prefect Agent running to see the log
 > - 728,390
 > - 514,392
 
+After creating a free account with `Prefect Cloud` and creating a `workspace`, I needed to register the `Prefect GCP` blocks:
+```
+prefect block register -m prefect_gcp
+```
+Then, the following blocks need to be configured: `Email`, `GCP Credentials`, `GCS Bucket`, and `GitHub`.
+
+The following python CLI command can be ran to create and apply the deployment to the prefect API:
+```
+python flows/github_deploy.py 
+```
+We can then send the deployment flow to the work queue:
+```
+prefect deployment run etl-parent-flow/github_deploy
+```
+Next, we must start the prefect agent (can be done in another terminal window) to run the work queue:
+```
+prefect agent start --work-queue "default"
+```
+We can monitor the terminal window that has Prefect Agent running to see the log print out of total number of rows that were preccessed:
+```
+03:03:12.777 | INFO    | Task run 'clean-2c6af9f6-0' - rows: 514392
+```
+
 
 ## Question 6. Secrets
 > Prefect Secret blocks provide secure, encrypted storage in the database and obfuscation in the UI. Create a secret block in the UI that stores a fake 10-digit password to connect to a third-party service. Once you’ve created your block in the UI, how many characters are shown as asterisks (*) on the next page of the UI?
