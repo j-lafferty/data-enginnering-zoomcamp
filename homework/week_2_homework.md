@@ -301,13 +301,13 @@ We can monitor the terminal window that has Prefect Agent running to see the log
 > - 728,390
 > - 514,392
 
-After creating a free account with `Prefect Cloud` and creating a `workspace`, I needed to register the `Prefect GCP` blocks:
+After creating a free account with `Prefect Cloud` and creating a `workspace`, `Prefect GCP` blocks need to be registered:
 ```
 prefect block register -m prefect_gcp
 ```
-Then, the following blocks need to be configured: `Email`, `GCP Credentials`, `GCS Bucket`, and `GitHub`.
+The following blocks can then be configured: `Email`, `GCP Credentials`, `GCS Bucket`, and `GitHub`. The settings can be reused from the local Orion blocks to avoid needing to change any code in the scripts. 
 
-The following python CLI command can be ran to create and apply the deployment to the prefect API:
+Next, the following python CLI command can be ran to create and apply the deployment to the prefect API:
 ```
 python flows/github_deploy.py 
 ```
@@ -315,13 +315,13 @@ We can then send the deployment flow to the work queue:
 ```
 prefect deployment run etl-parent-flow/github_deploy
 ```
-Next, we must start the prefect agent (can be done in another terminal window) to run the work queue:
+We must then start the prefect agent (can be done in another terminal window) to run the work queue:
 ```
 prefect agent start --work-queue "default"
 ```
-We can monitor the terminal window that has Prefect Agent running to see the log print out of total number of rows that were preccessed:
+An email notification will be sent once the flow is complete. The body of the email will contain a link to the flow, which will allow us to access the flow log:
 ```
-03:03:12.777 | INFO    | Task run 'clean-2c6af9f6-0' - rows: 514392
+rows: 514392   11:35:13 AM clean-2c6af9f6-0
 ```
 
 
